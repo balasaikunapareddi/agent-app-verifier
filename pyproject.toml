@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agent-app-verifier"
+version = "0.1.0"
+description = "Agent-native app verification loop in the spirit of Expo Exact: an LLM agent builds a todo app from a declarative spec, then drives it through ten operations — tree, screenshot, tap, type, state, layout, logs, clock, prefer, perf — seeing it and running scripted tests until it passes."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "litellm>=1.40",
+    "pyyaml>=6.0",
+    "pillow>=10.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+agent-app-verifier = "agent_app_verifier.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agent_app_verifier"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

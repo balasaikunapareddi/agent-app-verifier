@@ -1,0 +1,53 @@
+# Scripted demo test: the same ten operations, run unchanged against the app.
+# Add 3 todos, check one off, delete one, assert 2 left; then jump the
+# virtual clock 60s and assert the "last updated" timer advanced.
+name: todo-demo
+steps:
+  - op: type
+    id: new_todo
+    text: "Buy milk"
+  - op: tap
+    id: add_button
+  - op: type
+    id: new_todo
+    text: "Walk the dog"
+  - op: tap
+    id: add_button
+  - op: type
+    id: new_todo
+    text: "Read a chapter"
+  - op: tap
+    id: add_button
+  - op: assert
+    path: state.todos.length
+    equals: 3
+  - op: assert
+    path: state.remaining
+    equals: 3
+  - op: tap
+    id: todo_list
+    index: 0
+    part: toggle
+  - op: assert
+    path: state.remaining
+    equals: 2
+  - op: tap
+    id: todo_list
+    index: 1
+    part: delete
+  - op: assert
+    path: state.todos.length
+    equals: 2
+  - op: assert
+    path: state.remaining
+    equals: 1
+  - op: clock
+    advance: 60
+  - op: assert
+    path: state.elapsed
+    equals: 60
+  - op: assert
+    path: tree.updated_timer.text
+    contains: "60s"
+  - op: screenshot
+  - op: perf

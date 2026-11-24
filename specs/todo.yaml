@@ -1,0 +1,39 @@
+# Built-in todo app spec (the "correct" spec the agent is asked to produce).
+app:
+  title: "Todos"
+  theme: light
+components:
+  - id: header
+    type: text
+    text: "My Todos"
+  - id: new_todo
+    type: input
+    placeholder: "Add a todo..."
+  - id: add_button
+    type: button
+    label: "Add"
+    action: add_todo
+  - id: todo_list
+    type: list
+    source: todos
+  - id: remaining
+    type: text
+    template: "{remaining} left"
+  - id: updated_timer
+    type: timer
+    template: "updated {elapsed}s ago"
+state:
+  todos: []
+  clock: 0
+  last_updated: 0
+actions:
+  add_todo:
+    - append: {list: todos, item: {text: "{input:new_todo}", done: false}}
+    - clear: new_todo
+    - touch: true
+  toggle_todo:
+    - toggle: {list: todos, index: "{index}"}
+    - touch: true
+  delete_todo:
+    - remove: {list: todos, index: "{index}"}
+    - touch: true
